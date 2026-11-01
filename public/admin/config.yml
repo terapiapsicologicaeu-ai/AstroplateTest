@@ -1,0 +1,42 @@
+backend:
+  name: github
+  repo: tuonomeutente/tuorepo # Sostituisci con il tuo username/repo GitHub quando lo caricherai online
+  branch: main
+
+# Cartella dove Astroplate salva e legge le immagini
+media_folder: "public/images"
+public_folder: "/images"
+
+collections:
+  # 1. Collezione Articoli del Blog
+  - name: "blog"
+    label: "Articoli & Post"
+    folder: "src/content/blog"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Titolo", name: "title", widget: "string" }
+      - { label: "Descrizione / Meta Description", name: "description", widget: "text" }
+      - { label: "Data di Pubblicazione", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
+      - { label: "Immagine di Copertina", name: "image", widget: "image", required: false }
+      - { label: "Autore", name: "author", widget: "string", default: "Dott. Leonardo Corsetti" }
+      - { 
+          label: "Tag / Categorie", 
+          name: "categories", 
+          widget: "list", 
+          default: ["neuroscienze"] 
+        }
+      - { label: "Bozza / Pubblicato", name: "draft", widget: "boolean", default: false }
+      - { label: "Contenuto dell'Articolo", name: "body", widget: "markdown" }
+
+  # 2. Collezione Pagine Statiche
+  - name: "pages"
+    label: "Pagine Statiche"
+    folder: "src/content/pages"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Titolo Pagina", name: "title", widget: "string" }
+      - { label: "Descrizione", name: "description", widget: "text" }
+      - { label: "Bozza", name: "draft", widget: "boolean", default: false }
+      - { label: "Contenuto", name: "body", widget: "markdown" }

@@ -1,42 +1,194 @@
 backend:
   name: github
-  repo: tuonomeutente/tuorepo # Sostituisci con il tuo username/repo GitHub quando lo caricherai online
+  repo: tuonomeutente/tuorepo
   branch: main
 
-# Cartella dove Astroplate salva e legge le immagini
 media_folder: "public/images"
 public_folder: "/images"
 
+output:
+  omit_empty_optional_fields: true
+
 collections:
-  # 1. Collezione Articoli del Blog
+  # 1. Blog (ricco come la demo)
   - name: "blog"
     label: "Articoli & Post"
+    label_singular: "Articolo"
+    description: "Gestisci gli articoli del blog."
+    icon: "article"
     folder: "src/content/blog"
     create: true
     slug: "{{slug}}"
+    summary: "{{title}} · {{date | date('MMM D, YYYY')}}"
+    thumbnail: "image"
+    sortable_fields:
+      fields: [title, date, author]
+      default:
+        field: date
+        direction: descending
+    view_filters:
+      filters:
+        - name: pubblicati
+          label: "Pubblicati"
+          field: draft
+          pattern: false
+        - name: bozze
+          label: "Bozze"
+          field: draft
+          pattern: true
+    table_columns:
+      - title
+      - { field: "{{date | date('MMM D, YYYY')}}", label: "Data" }
+      - author
+      - categories
+      - tags
+      - draft
+    bulk_edit:
+      fields: [title, date, author, draft]
+    view_groups:
+      groups:
+        - name: year
+          label: "Anno"
+          field: date
+          pattern: \d{4}
+        - name: author
+          label: "Autore"
+          field: author
     fields:
       - { label: "Titolo", name: "title", widget: "string" }
+      - { label: "Meta Title", name: "meta_title", widget: "string", required: false }
       - { label: "Descrizione / Meta Description", name: "description", widget: "text" }
       - { label: "Data di Pubblicazione", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
       - { label: "Immagine di Copertina", name: "image", widget: "image", required: false }
-      - { label: "Autore", name: "author", widget: "string", default: "Dott. Leonardo Corsetti" }
-      - { 
-          label: "Tag / Categorie", 
-          name: "categories", 
-          widget: "list", 
-          default: ["neuroscienze"] 
-        }
+      - { label: "Autore", name: "author", widget: "string", default: "Admin" }
+      - label: "Categorie"
+        name: "categories"
+        widget: "list"
+        default: ["others"]
+      - label: "Tag"
+        name: "tags"
+        widget: "list"
+        default: ["others"]
       - { label: "Bozza / Pubblicato", name: "draft", widget: "boolean", default: false }
       - { label: "Contenuto dell'Articolo", name: "body", widget: "markdown" }
 
-  # 2. Collezione Pagine Statiche
+  # 2. Pagine Statiche
   - name: "pages"
     label: "Pagine Statiche"
+    label_singular: "Pagina"
+    icon: "description"
     folder: "src/content/pages"
     create: true
     slug: "{{slug}}"
+    summary: "{{title}}"
     fields:
       - { label: "Titolo Pagina", name: "title", widget: "string" }
-      - { label: "Descrizione", name: "description", widget: "text" }
-      - { label: "Bozza", name: "draft", widget: "boolean", default: false }
+      - { label: "Meta Title", name: "meta_title", widget: "string", required: false }
+      - { label: "Descrizione", name: "description", widget: "text", required: false }
+      - { label: "Data", name: "date", widget: "datetime", format: "YYYY-MM-DD", required: false }
+      - { label: "Immagine", name: "image", widget: "image", required: false }
+      - { label: "Bozza", name: "draft", widget: "boolean", required: false }
       - { label: "Contenuto", name: "body", widget: "markdown" }
+
+  # 3. Autori
+  - name: "authors"
+    label: "Autori"
+    label_singular: "Autore"
+    icon: "group"
+    folder: "src/content/authors"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}}"
+    fields:
+      - { label: "Titolo", name: "title", widget: "string" }
+      - { label: "Descrizione", name: "description", widget: "text", required: false }
+      - { label: "Immagine", name: "image", widget: "image", required: false }
+      - { label: "Bozza", name: "draft", widget: "boolean", required: false }
+      - { label: "Contenuto", name: "body", widget: "markdown" }
+
+  # 4. About (singleton file)
+  - name: "about"
+    label: "About"
+    icon: "info"
+    files:
+      - label: "About"
+        name: "about"
+        file: "src/content/about/-index.md"
+        fields:
+          - { label: "Titolo", name: "title", widget: "string" }
+          - { label: "Meta Title", name: "meta_title", widget: "string", required: false }
+          - { label: "Descrizione", name: "description", widget: "text", required: false }
+          - { label: "Data", name: "date", widget: "datetime", format: "YYYY-MM-DD", required: false }
+          - { label: "Immagine", name: "image", widget: "image", required: false }
+          - { label: "Bozza", name: "draft", widget: "boolean", required: false }
+          - { label: "Contenuto", name: "body", widget: "markdown" }
+
+  # 5. Contact (singleton file)
+  - name: "contact"
+    label: "Contatti"
+    icon: "mail"
+    files:
+      - label: "Contatti"
+        name: "contact"
+        file: "src/content/contact/-index.md"
+        fields:
+          - { label: "Titolo", name: "title", widget: "string" }
+          - { label: "Meta Title", name: "meta_title", widget: "string", required: false }
+          - { label: "Descrizione", name: "description", widget: "text", required: false }
+          - { label: "Data", name: "date", widget: "datetime", format: "YYYY-MM-DD", required: false }
+          - { label: "Immagine", name: "image", widget: "image", required: false }
+          - { label: "Bozza", name: "draft", widget: "boolean", required: false }
+          - { label: "Contenuto", name: "body", widget: "markdown" }
+
+  # 6. Homepage (singleton file)
+  - name: "homepage"
+    label: "Homepage"
+    icon: "home"
+    files:
+      - label: "Homepage"
+        name: "homepage"
+        file: "src/content/homepage/-index.md"
+        fields:
+          - { label: "Titolo", name: "title", widget: "string" }
+          - { label: "Meta Title", name: "meta_title", widget: "string", required: false }
+          - { label: "Descrizione", name: "description", widget: "text", required: false }
+          - { label: "Data", name: "date", widget: "datetime", format: "YYYY-MM-DD", required: false }
+          - { label: "Immagine", name: "image", widget: "image", required: false }
+          - { label: "Bozza", name: "draft", widget: "boolean", required: false }
+          - { label: "Contenuto", name: "body", widget: "markdown" }
+
+  # 7. Sezioni (cta, testimonial)
+  - name: "sections"
+    label: "Sezioni"
+    icon: "view_quilt"
+    files:
+      - label: "Call to Action"
+        name: "cta"
+        file: "src/content/sections/call-to-action.md"
+        fields:
+          - { label: "Abilita", name: "enable", widget: "boolean" }
+          - { label: "Titolo", name: "title", widget: "string" }
+          - { label: "Descrizione", name: "description", widget: "text" }
+          - { label: "Immagine", name: "image", widget: "image" }
+          - label: "Pulsante"
+            name: "button"
+            widget: "object"
+            fields:
+              - { label: "Abilita", name: "enable", widget: "boolean" }
+              - { label: "Etichetta", name: "label", widget: "string" }
+              - { label: "Link", name: "link", widget: "string" }
+      - label: "Testimonianze"
+        name: "testimonial"
+        file: "src/content/sections/testimonial.md"
+        fields:
+          - { label: "Abilita", name: "enable", widget: "boolean" }
+          - { label: "Titolo", name: "title", widget: "string" }
+          - { label: "Descrizione", name: "description", widget: "text" }
+          - label: "Testimonianze"
+            name: "testimonials"
+            widget: "list"
+            fields:
+              - { label: "Nome", name: "name", widget: "string" }
+              - { label: "Avatar", name: "avatar", widget: "image" }
+              - { label: "Ruolo", name: "designation", widget: "string" }
+              - { label: "Contenuto", name: "content", widget: "text" }

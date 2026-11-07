@@ -16,9 +16,12 @@
       "hasChildren": false
     },
     {
+      "name": "Nuova Pagina",
+      "page": "nuova-pagina"
+    },
+    {
       "name": "Pages",
       "url": "#",
-      "hasChildren": true,
       "children": [
         {
           "name": "Contact",
@@ -44,7 +47,8 @@
           "name": "404 Page",
           "url": "/404"
         }
-      ]
+      ],
+      "hasChildren": true
     },
     {
       "name": "Blog",

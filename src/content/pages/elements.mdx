@@ -53,7 +53,7 @@ Did you come here for something in particular or just general Riker-bashing? And
 
 [I'm an inline-style link with title](https://www.google.com "Google's Homepage")
 
-[I'm a relative reference to a repository file](../blob/master/LICENSE)
+[I'm a link to the About page](/about)
 
 example.com (but not on Github, for example).
 
@@ -143,6 +143,33 @@ window.addEventListener("load", (e) => {
 <Notice type="info">This is a simple note.</Notice>
 
 <Notice type="warning">This is a simple note.</Notice>
+
+### Callout (direttiva)
+
+:::tip
+Questo è un blocco **Tip** scritto con la direttiva `:::tip`.
+:::
+
+:::warning
+Questo è un blocco **Attenzione**.
+:::
+
+### Accordion (direttiva)
+
+::::accordion{title="Come funziona l'accordion?"}
+Contenuto **markdown** dentro l'accordion.
+::::
+
+### Tab (direttiva)
+
+::::tabs
+:::tab{title="Tab 1"}
+Contenuto del primo tab.
+:::
+:::tab{title="Tab 2"}
+Contenuto del secondo tab.
+:::
+::::
 
 ---
 

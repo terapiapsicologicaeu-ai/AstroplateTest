@@ -6,6 +6,8 @@ import tailwindcss from "@tailwindcss/vite";
 import AutoImport from "astro-auto-import";
 import { defineConfig, fontProviders } from "astro/config";
 import remarkCollapse from "remark-collapse";
+import remarkDirective from "remark-directive";
+import remarkNotice from "./src/lib/remark/remarkNotice.mjs";
 import remarkToc from "remark-toc";
 import sharp from "sharp";
 import config from "./src/config/config.json";
@@ -77,6 +79,8 @@ export default defineConfig({
   markdown: {
     processor: unified({
       remarkPlugins: [
+        remarkDirective,
+        remarkNotice,
         remarkToc,
         [remarkCollapse, { test: "Table of contents" }],
       ],

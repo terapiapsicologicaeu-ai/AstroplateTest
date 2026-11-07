@@ -1,7 +1,7 @@
 ---
-title: "Privacy"
-meta_title: ""
-description: "this is meta description"
+title: Privacy
+description: this is meta description
+image: /images/suju-foto-waterfall-10541974_1280.jpg
 draft: false
 ---
 

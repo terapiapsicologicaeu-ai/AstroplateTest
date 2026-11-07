@@ -167,5 +167,27 @@ function resolveImageUrl(value?: string): string {
     </main>
     <Footer />
     <TwSizeIndicator />
+    <script>
+      function initTabs() {
+        document.querySelectorAll("[data-tabs]").forEach((tabs) => {
+          if (tabs.getAttribute("data-tabs-ready") === "true") return;
+          tabs.setAttribute("data-tabs-ready", "true");
+          const buttons = Array.from(
+            tabs.querySelectorAll(".tab-nav-item"),
+          );
+          const panels = Array.from(tabs.querySelectorAll(".tab-content"));
+          buttons.forEach((button, index) => {
+            button.addEventListener("click", () => {
+              buttons.forEach((item) => item.classList.remove("active"));
+              panels.forEach((panel) => panel.classList.add("hidden"));
+              button.classList.add("active");
+              panels[index]?.classList.remove("hidden");
+            });
+          });
+        });
+      }
+      document.addEventListener("astro:page-load", initTabs);
+      initTabs();
+    </script>
   </body>
 </html>

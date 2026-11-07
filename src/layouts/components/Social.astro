@@ -7,11 +7,13 @@ export interface ISocial {
   icon: string;
   link: string;
 }
+
+const items: ISocial[] = source || [];
 ---
 
 <ul class={className}>
   {
-    source.map((social: ISocial) => (
+    items.map((social: ISocial) => (
       <li>
         <a
           aria-label={social.name}

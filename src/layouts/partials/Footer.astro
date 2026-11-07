@@ -17,7 +17,7 @@ const { footer }: { footer: FooterLink[] } = menu;
 
 function resolveFooterUrl(item: FooterLink): string {
   if (item.page) return `/${item.page}`;
-  if (item.post) return `/blog/${item.post}`;
+  if (item.post) return `/${config.settings.blog_folder}/${item.post}`;
   return item.url || "#";
 }
 ---

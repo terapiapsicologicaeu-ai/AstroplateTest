@@ -129,6 +129,32 @@
   @apply max-h-screen;
 }
 
+/* accordion rendered from a Markdown directive (<details>) */
+details.accordion > summary {
+  list-style: none;
+}
+details.accordion > summary::-webkit-details-marker {
+  display: none;
+}
+details.accordion > summary::after {
+  content: "▾";
+  @apply ml-2 inline-block transition-transform duration-200;
+}
+details.accordion[open] > summary::after {
+  @apply rotate-180;
+}
+details.accordion[open] .accordion-content {
+  @apply max-h-screen py-4;
+}
+
+/* google maps embed */
+.map-embed {
+  @apply my-6;
+}
+.map-embed iframe {
+  @apply w-full rounded-lg border-0;
+}
+
 /* modal */
 .modal {
   @apply fixed inset-0 z-40 hidden h-full w-full overflow-auto;

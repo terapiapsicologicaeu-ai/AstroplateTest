@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: tuonomeutente/tuorepo
+  repo: tuonomeutente/tuorepo # <-- sostituisci con il repo reale prima del deploy GitHub
   branch: main
 
 media_folder: "public/images"
@@ -8,6 +8,43 @@ public_folder: "/images"
 
 output:
   omit_empty_optional_fields: true
+
+field_defaults:
+  richtext:
+    allow_nested_components: exclude_self
+    # Built-in “link” button removed: the custom “Link” component handles
+    # internal pages/posts, external URLs and the new-tab option.
+    buttons:
+      [
+        bold,
+        italic,
+        strikethrough,
+        code,
+        heading-one,
+        heading-two,
+        heading-three,
+        heading-four,
+        heading-five,
+        heading-six,
+        bulleted-list,
+        numbered-list,
+        quote,
+      ]
+    editor_components:
+      [
+        code-block,
+        code-snippet,
+        image,
+        table,
+        hr,
+        notice,
+        internal-link,
+        button,
+        accordion,
+        tabs,
+        map,
+        youtube,
+      ]
 
 collections:
   # 1. Blog
@@ -18,6 +55,7 @@ collections:
     folder: "src/content/blog"
     create: true
     slug: "{{slug}}"
+    identifier_field: "title"
     summary: "{{title}} · {{date | date('MMM D, YYYY')}}"
     thumbnail: "image"
     sortable_fields:
@@ -42,6 +80,21 @@ collections:
       - categories
       - tags
       - draft
+    index_file:
+      name: "-index"
+      label: "Impostazioni elenco blog"
+      icon: "settings"
+      summary: "{{title}}"
+      editor:
+        preview: false
+      fields:
+        - { label: "Titolo", name: "title", widget: "string" }
+        - { label: "Meta Title", name: "meta_title", widget: "string", required: false }
+        - { label: "Descrizione", name: "description", widget: "text", required: false }
+        - { label: "Data", name: "date", widget: "datetime", type: "date", format: "YYYY-MM-DD", required: false }
+        - { label: "Immagine", name: "image", widget: "image", required: false }
+        - { label: "Bozza", name: "draft", widget: "boolean", required: false }
+        - { label: "Contenuto", name: "body", widget: "markdown" }
     bulk_edit:
       fields: [title, date, author, draft]
     view_groups:
@@ -55,21 +108,59 @@ collections:
           field: author
     fields:
       - { label: "Titolo", name: "title", widget: "string" }
-      - { label: "Meta Title", name: "meta_title", widget: "string", required: false }
-      - { label: "Descrizione", name: "description", widget: "text" }
-      - { label: "Data", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
-      - { label: "Immagine", name: "image", widget: "image", required: false }
-      - { label: "Autore", name: "author", widget: "string", default: "Admin" }
+      - { label: "Meta Title", name: "meta_title", widget: "string", required: false, hint: "Titolo SEO opzionale." }
+      - { label: "Descrizione", name: "description", widget: "text", required: false, hint: "Usata per SEO e anteprime." }
+      - { label: "Data", name: "date", widget: "datetime", type: "date", format: "YYYY-MM-DD", default: "{{now}}", hint: "Data di pubblicazione." }
+      - { label: "Immagine", name: "image", widget: "image", required: false, hint: "Consigliato 1200x630 px." }
+      - label: "Autore"
+        name: "author"
+        widget: "relation"
+        collection: "authors"
+        value_field: "{{title}}"
+        display_fields: ["title"]
+        search_fields: ["title"]
+        required: true
+        hint: "Seleziona un autore esistente."
       - label: "Categorie"
         name: "categories"
-        widget: "list"
+        widget: "tags"
+        taxonomy_key: "categories"
         default: ["others"]
+        options:
+          [
+            "Application",
+            "Architecture",
+            "Data",
+            "Software",
+            "Technology",
+            "others",
+            "Psicologia",
+            "Psicoterapia",
+            "Neuroscenze",
+            "Intelligenza Artificiale",
+          ]
+        hint: "Seleziona le categorie esistenti o scrivine una nuova e premi Invio."
       - label: "Tag"
         name: "tags"
-        widget: "list"
+        widget: "tags"
+        taxonomy_key: "tags"
         default: ["others"]
+        options:
+          [
+            "Mio primo tag",
+            "Mio secondo tag",
+            "nextjs",
+            "others",
+            "silicon",
+            "software",
+            "tailwind",
+            "technology",
+            "primo tag",
+            "secondo tag",
+          ]
+        hint: "Seleziona i tag esistenti o scrivine uno nuovo e premi Invio."
       - { label: "Bozza", name: "draft", widget: "boolean", default: false }
-      - { label: "Contenuto", name: "body", widget: "markdown" }
+      - { label: "Contenuto", name: "body", widget: "markdown", hint: "Usa i pulsanti Tip/Avviso e Link interno nella toolbar." }
 
   # 2. Pagine
   - name: "pages"
@@ -79,15 +170,16 @@ collections:
     folder: "src/content/pages"
     create: true
     slug: "{{slug}}"
+    identifier_field: "title"
     summary: "{{title}}"
     fields:
       - { label: "Titolo", name: "title", widget: "string" }
       - { label: "Meta Title", name: "meta_title", widget: "string", required: false }
       - { label: "Descrizione", name: "description", widget: "text", required: false }
-      - { label: "Data", name: "date", widget: "datetime", format: "YYYY-MM-DD", required: false }
-      - { label: "Immagine", name: "image", widget: "image", required: false }
+      - { label: "Data", name: "date", widget: "datetime", type: "date", format: "YYYY-MM-DD", required: false }
+      - { label: "Immagine", name: "image", widget: "image", required: false, hint: "Consigliato 1200x630 px." }
       - { label: "Bozza", name: "draft", widget: "boolean", required: false }
-      - { label: "Contenuto", name: "body", widget: "markdown" }
+      - { label: "Contenuto", name: "body", widget: "markdown", hint: "I file .mdx con componenti JSX vanno modificati nel codice." }
 
   # 3. Autori
   - name: "authors"
@@ -99,20 +191,36 @@ collections:
     summary: "{{title}}"
     fields:
       - { label: "Titolo", name: "title", widget: "string" }
+      - { label: "Meta Title", name: "meta_title", widget: "string", required: false, hint: "Titolo SEO opzionale." }
       - { label: "Descrizione", name: "description", widget: "text", required: false }
       - { label: "Email", name: "email", widget: "string", required: false }
-      - { label: "Immagine", name: "image", widget: "image", required: false }
+      - { label: "Immagine", name: "image", widget: "image", required: false, hint: "Consigliato quadrato (es. 400x400)." }
       - label: "Social"
         name: "social"
         widget: "list"
         required: false
+        label_singular: "Social"
         summary: "{{fields.name}} → {{fields.link}}"
         fields:
           - { label: "Nome", name: "name", widget: "string" }
-          - { label: "Icona", name: "icon", widget: "string" }
+          - { label: "Icona", name: "icon", widget: "string", hint: "Es. FaGithub, FaTwitter, FaLinkedin (react-icons/fa6)." }
           - { label: "Link", name: "link", widget: "string" }
       - { label: "Bozza", name: "draft", widget: "boolean", required: false }
       - { label: "Contenuto", name: "body", widget: "markdown" }
+    index_file:
+      name: "-index"
+      label: "Impostazioni elenco autori"
+      icon: "settings"
+      summary: "{{title}}"
+      editor:
+        preview: false
+      fields:
+        - { label: "Titolo", name: "title", widget: "string" }
+        - { label: "Meta Title", name: "meta_title", widget: "string", required: false }
+        - { label: "Descrizione", name: "description", widget: "text", required: false }
+        - { label: "Immagine", name: "image", widget: "image", required: false }
+        - { label: "Bozza", name: "draft", widget: "boolean", required: false }
+        - { label: "Contenuto", name: "body", widget: "markdown" }
 
   # 4. About
   - name: "about"
@@ -126,8 +234,8 @@ collections:
           - { label: "Titolo", name: "title", widget: "string" }
           - { label: "Meta Title", name: "meta_title", widget: "string", required: false }
           - { label: "Descrizione", name: "description", widget: "text", required: false }
-          - { label: "Data", name: "date", widget: "datetime", format: "YYYY-MM-DD", required: false }
-          - { label: "Immagine", name: "image", widget: "image", required: false }
+          - { label: "Data", name: "date", widget: "datetime", type: "date", format: "YYYY-MM-DD", required: false }
+          - { label: "Immagine", name: "image", widget: "image", required: false, hint: "Consigliato 1200x630 px." }
           - { label: "Bozza", name: "draft", widget: "boolean", required: false }
           - { label: "Contenuto", name: "body", widget: "markdown" }
 
@@ -143,8 +251,8 @@ collections:
           - { label: "Titolo", name: "title", widget: "string" }
           - { label: "Meta Title", name: "meta_title", widget: "string", required: false }
           - { label: "Descrizione", name: "description", widget: "text", required: false }
-          - { label: "Data", name: "date", widget: "datetime", format: "YYYY-MM-DD", required: false }
-          - { label: "Immagine", name: "image", widget: "image", required: false }
+          - { label: "Data", name: "date", widget: "datetime", type: "date", format: "YYYY-MM-DD", required: false }
+          - { label: "Immagine", name: "image", widget: "image", required: false, hint: "Consigliato 1200x630 px." }
           - { label: "Bozza", name: "draft", widget: "boolean", required: false }
           - { label: "Contenuto", name: "body", widget: "markdown" }
 
@@ -165,7 +273,7 @@ collections:
             fields:
               - { label: "Titolo", name: "title", widget: "string" }
               - { label: "Contenuto", name: "content", widget: "text" }
-              - { label: "Immagine", name: "image", widget: "image" }
+              - { label: "Immagine", name: "image", widget: "image", hint: "Consigliato 1200x380 px o più grande." }
               - label: "Pulsante"
                 name: "button"
                 widget: "object"
@@ -176,12 +284,18 @@ collections:
           - label: "Caratteristiche"
             name: "features"
             widget: "list"
+            label_singular: "Caratteristica"
             summary: "{{fields.title}}"
+            collapsed: true
             fields:
               - { label: "Titolo", name: "title", widget: "string" }
               - { label: "Contenuto", name: "content", widget: "text" }
-              - { label: "Immagine", name: "image", widget: "image" }
-              - { label: "Punti elenco", name: "bulletpoints", widget: "list" }
+              - { label: "Immagine", name: "image", widget: "image", hint: "Consigliato 520x480 px." }
+              - label: "Punti elenco"
+                name: "bulletpoints"
+                widget: "list"
+                label_singular: "Punto"
+                hint: "Un punto per riga."
               - label: "Pulsante"
                 name: "button"
                 widget: "object"
@@ -202,7 +316,7 @@ collections:
           - { label: "Abilita", name: "enable", widget: "boolean" }
           - { label: "Titolo", name: "title", widget: "string" }
           - { label: "Descrizione", name: "description", widget: "text" }
-          - { label: "Immagine", name: "image", widget: "image" }
+          - { label: "Immagine", name: "image", widget: "image", hint: "Consigliato 1200x630 px." }
           - label: "Pulsante"
             name: "button"
             widget: "object"
@@ -222,11 +336,28 @@ collections:
             widget: "list"
             fields:
               - { label: "Nome", name: "name", widget: "string" }
-              - { label: "Avatar", name: "avatar", widget: "image" }
+              - { label: "Avatar", name: "avatar", widget: "image", hint: "Consigliato quadrato (es. 200x200)." }
               - { label: "Ruolo", name: "designation", widget: "string" }
               - { label: "Contenuto", name: "content", widget: "text" }
 
 singletons:
+  # Tassonomie (categorie e tag disponibili)
+  - name: "taxonomy"
+    label: "Tassonomie"
+    icon: "sell"
+    file: "public/data/taxonomy.json"
+    fields:
+      - label: "Categorie"
+        name: "categories"
+        widget: "list"
+        label_singular: "Categoria"
+        hint: "Aggiungi qui le categorie disponibili nei post."
+      - label: "Tag"
+        name: "tags"
+        widget: "list"
+        label_singular: "Tag"
+        hint: "Aggiungi qui i tag disponibili nei post."
+
   # Impostazioni sito (config.json)
   - name: "site_config"
     label: "Impostazioni Sito"
@@ -238,12 +369,12 @@ singletons:
         widget: "object"
         fields:
           - { label: "Titolo", name: "title", widget: "string" }
-          - { label: "Base URL", name: "base_url", widget: "string" }
+          - { label: "Base URL", name: "base_url", widget: "string", hint: "Es. https://tuodominio.it" }
           - { label: "Base Path", name: "base_path", widget: "string" }
           - { label: "Trailing Slash", name: "trailing_slash", widget: "boolean" }
-          - { label: "Favicon", name: "favicon", widget: "image", required: false }
-          - { label: "Logo", name: "logo", widget: "image", required: false }
-          - { label: "Logo Darkmode", name: "logo_darkmode", widget: "image", required: false }
+          - { label: "Favicon", name: "favicon", widget: "image", required: false, hint: "Consigliato 512x512 px." }
+          - { label: "Logo", name: "logo", widget: "image", required: false, hint: "Consigliato 150x30 px." }
+          - { label: "Logo Darkmode", name: "logo_darkmode", widget: "image", required: false, hint: "Consigliato 150x30 px." }
           - { label: "Larghezza Logo", name: "logo_width", widget: "string" }
           - { label: "Altezza Logo", name: "logo_height", widget: "string" }
           - { label: "Testo Logo", name: "logo_text", widget: "string" }
@@ -270,7 +401,7 @@ singletons:
         widget: "object"
         fields:
           - { label: "Azione Form Contatto", name: "contact_form_action", widget: "string" }
-          - { label: "Copyright", name: "copyright", widget: "string" }
+          - { label: "Copyright", name: "copyright", widget: "string", hint: "Supporta Markdown (es. link)." }
       - label: "Pulsante Navigazione"
         name: "navigation_button"
         widget: "object"
@@ -290,12 +421,20 @@ singletons:
         fields:
           - { label: "Abilita", name: "enable", widget: "boolean" }
           - { label: "Shortname", name: "shortname", widget: "string" }
+          - label: "Impostazioni Disqus"
+            name: "settings"
+            widget: "object"
+            required: false
+            fields:
+              - { label: "URL", name: "url", widget: "string", required: false }
+              - { label: "Identifier", name: "identifier", widget: "string", required: false }
+              - { label: "Titolo", name: "title", widget: "string", required: false }
       - label: "Metadata"
         name: "metadata"
         widget: "object"
         fields:
           - { label: "Autore Meta", name: "meta_author", widget: "string" }
-          - { label: "Immagine OG", name: "meta_image", widget: "image", required: false }
+          - { label: "Immagine OG", name: "meta_image", widget: "image", required: false, hint: "Consigliato 1200x630 px." }
           - { label: "Descrizione Meta", name: "meta_description", widget: "text" }
       - label: "LLMs"
         name: "llms"
@@ -316,7 +455,8 @@ singletons:
       - label: "Menu Principale"
         name: "main"
         widget: "list"
-        summary: "{{name}} → {{url}}"
+        label_singular: "Voce"
+        summary: "{{name}}"
         fields:
           - { label: "Nome", name: "name", widget: "string" }
           - label: "Pagina interna"
@@ -327,6 +467,7 @@ singletons:
             display_fields: ["{{title}}"]
             search_fields: ["title"]
             required: false
+            hint: "Ha priorità sull'URL personalizzato."
           - label: "Articolo del blog"
             name: "post"
             widget: "relation"
@@ -335,12 +476,14 @@ singletons:
             display_fields: ["{{title}}"]
             search_fields: ["title"]
             required: false
-          - { label: "URL personalizzato / esterno", name: "url", widget: "string", required: false }
-          - { label: "Ha figli", name: "hasChildren", widget: "boolean", required: false }
+            hint: "Ha priorità sull'URL personalizzato."
+          - { label: "URL personalizzato / esterno", name: "url", widget: "string", required: false, hint: "Es. https://... oppure /percorso." }
           - label: "Figli"
             name: "children"
             widget: "list"
             required: false
+            label_singular: "Figlio"
+            summary: "{{name}}"
             fields:
               - { label: "Nome", name: "name", widget: "string" }
               - label: "Pagina interna"
@@ -363,7 +506,8 @@ singletons:
       - label: "Menu Footer"
         name: "footer"
         widget: "list"
-        summary: "{{name}} → {{url}}"
+        label_singular: "Voce"
+        summary: "{{name}}"
         fields:
           - { label: "Nome", name: "name", widget: "string" }
           - label: "Pagina interna"
@@ -396,7 +540,7 @@ singletons:
         summary: "{{name}} → {{link}}"
         fields:
           - { label: "Nome", name: "name", widget: "string" }
-          - { label: "Icona", name: "icon", widget: "string" }
+          - { label: "Icona", name: "icon", widget: "string", hint: "Es. FaGithub, FaXTwitter (react-icons/fa6)." }
           - { label: "Link", name: "link", widget: "string" }
 
   # Tema

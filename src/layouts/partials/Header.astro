@@ -27,7 +27,7 @@ const { pathname } = Astro.url;
 
 function resolveMenuUrl(item: ChildNavigationLink): string {
   if (item.page) return `/${item.page}`;
-  if (item.post) return `/blog/${item.post}`;
+  if (item.post) return `/${config.settings.blog_folder}/${item.post}`;
   return item.url || "#";
 }
 ---
@@ -63,7 +63,7 @@ function resolveMenuUrl(item: ChildNavigationLink): string {
       {
         main.map((menu) => (
           <>
-            {menu.hasChildren ? (
+            {(menu.hasChildren || (menu.children?.length ?? 0) > 0) ? (
               <li class="nav-item nav-dropdown group relative">
                 <input
                   type="checkbox"

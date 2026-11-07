@@ -20,4 +20,4 @@ un inguaggio
 
 ### H2 titolo
 
-[Post n.2](blog/post-2)
+[Post n.2](/blog/post-2)

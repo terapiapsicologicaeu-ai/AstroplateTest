@@ -12,6 +12,27 @@ const commonFields = {
   draft: z.boolean().default(false),
 };
 
+// Author collection schema
+const authorsCollection = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/authors" }),
+  schema: z.object({
+    ...commonFields,
+    email: z.string().optional(),
+    social: z
+      .array(
+        z
+          .object({
+            name: z.string().optional(),
+            icon: z.string().optional(),
+            link: z.string().optional(),
+          })
+          .optional(),
+      )
+      .optional(),
+    draft: z.boolean().default(false),
+  }),
+});
+
 // Post collection schema
 const blogCollection = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/blog" }),
@@ -25,29 +46,11 @@ const blogCollection = defineCollection({
     // Use factory functions for mutable array defaults (Zod 4 best practice)
     categories: z.array(z.string()).default(() => ["others"]),
     tags: z.array(z.string()).default(() => ["others"]),
-    draft: z.boolean().optional(),
+    draft: z.boolean().default(false),
   }),
 });
 
-// Author collection schema
-const authorsCollection = defineCollection({
-  loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/authors" }),
-  schema: z.object({
-    ...commonFields,
-    social: z
-      .array(
-        z
-          .object({
-            name: z.string().optional(),
-            icon: z.string().optional(),
-            link: z.string().optional(),
-          })
-          .optional(),
-      )
-      .optional(),
-    draft: z.boolean().optional(),
-  }),
-});
+// Author collection schema is defined above (with email support).
 
 // Pages collection schema
 const pagesCollection = defineCollection({

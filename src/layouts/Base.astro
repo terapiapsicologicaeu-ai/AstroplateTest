@@ -33,6 +33,14 @@ export interface Props {
 // destructure frontmatter
 const { title, meta_title, description, image, noindex, canonical } =
   Astro.props;
+
+// Absolute URLs must not be prefixed with the site base URL.
+function resolveImageUrl(value?: string): string {
+  const fallback = config.metadata.meta_image;
+  const src = value || fallback;
+  if (/^https?:\/\//i.test(src)) return src;
+  return `${config.site.base_url}${src}`;
+}
 ---
 
 <!doctype html>
@@ -138,20 +146,10 @@ const { title, meta_title, description, image, noindex, canonical } =
     />
 
     <!-- og-image -->
-    <meta
-      property="og:image"
-      content={`${config.site.base_url}${
-        image ? image : config.metadata.meta_image
-      }`}
-    />
+    <meta property="og:image" content={resolveImageUrl(image)} />
 
     <!-- twitter-image -->
-    <meta
-      name="twitter:image"
-      content={`${config.site.base_url}${
-        image ? image : config.metadata.meta_image
-      }`}
-    />
+    <meta name="twitter:image" content={resolveImageUrl(image)} />
     <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body class="flex flex-col min-h-screen">

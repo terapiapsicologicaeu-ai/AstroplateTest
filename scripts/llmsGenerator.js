@@ -4,7 +4,7 @@ import { spawn } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import TurndownService from "turndown";
-import { fileURLToPath } from "url";
+import { fileURLToPath, pathToFileURL } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -123,7 +123,7 @@ ${content}`;
   fs.writeFileSync(tempPath, tempContent, "utf8");
 
   try {
-    const mod = await import(tempPath);
+    const mod = await import(pathToFileURL(tempPath).href);
     fs.unlinkSync(tempPath);
     return mod.default?.i18n || null;
   } catch (err) {
@@ -196,13 +196,17 @@ function getClientDir(distFolder) {
   return fs.existsSync(clientDir) ? clientDir : distFolder;
 }
 
+function toPosix(p) {
+  return p.replace(/\\/g, "/");
+}
+
 function normalizePattern(baseDir, pattern) {
   const cleanPattern = pattern.replace(/^\/+/, "");
-  const fullPath = path.join(baseDir, cleanPattern);
+  const fullPath = toPosix(path.join(baseDir, cleanPattern));
 
   try {
     if (fs.statSync(fullPath).isDirectory()) {
-      return path.join(fullPath, "**/*.html");
+      return toPosix(path.join(fullPath, "**/*.html"));
     }
   } catch {
     // treat as glob pattern
@@ -215,14 +219,14 @@ async function discoverHtmlFiles(clientDir, excludePatterns, includePatterns) {
   const patterns =
     includePatterns?.length > 0
       ? includePatterns.map((p) => normalizePattern(clientDir, p))
-      : [path.join(clientDir, "**/*.html")];
+      : [toPosix(path.join(clientDir, "**/*.html"))];
 
   const userExcludes = (excludePatterns || []).map((p) =>
     normalizePattern(clientDir, p),
   );
 
   const ignore = [
-    ...DEFAULT_EXCLUDES.map((p) => path.join(clientDir, p)),
+    ...DEFAULT_EXCLUDES.map((p) => toPosix(path.join(clientDir, p))),
     ...userExcludes,
   ];
 
@@ -234,8 +238,8 @@ async function discoverHtmlFiles(clientDir, excludePatterns, includePatterns) {
 }
 
 function fileToUrlPath(filePath, clientDir) {
-  const relativePath = filePath.replace(path.resolve(clientDir), "");
-  let urlPath = relativePath.replace(/\\/g, "/").replace(/^\//, "");
+  const relativePath = toPosix(path.relative(clientDir, filePath));
+  let urlPath = relativePath.replace(/^\//, "");
 
   urlPath = urlPath.replace(/\.html$/, "");
 

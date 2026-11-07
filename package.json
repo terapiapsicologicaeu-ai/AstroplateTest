@@ -15,8 +15,8 @@
     "generate-json": "node scripts/jsonGenerator.js",
     "generate-llms": "node scripts/llmsGenerator.js",
     "remove-darkmode": "node scripts/removeDarkmode.js && pnpm format",
-    "deploy:cf-workers": "npm run build && wrangler deploy",
-    "preview:cf-workers": "npm run build && wrangler dev"
+    "deploy:cf-workers": "pnpm run build && wrangler deploy",
+    "preview:cf-workers": "pnpm run build && wrangler dev"
   },
   "dependencies": {
     "@astrojs/check": "0.9.10",
@@ -41,7 +41,8 @@
     "remark-collapse": "^0.1.2",
     "remark-toc": "^9.0.0",
     "sharp": "^0.35.3",
-    "vite": "^8.1.5"
+    "vite": "^8.1.5",
+    "cookie": "1.1.1"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.11",

@@ -11,3 +11,6 @@ minimumReleaseAgeExclude:
   - '@astrojs/mdx@7.0.4'
   - '@types/node@26.1.2'
   - astro@7.1.4
+
+overrides:
+  cookie: 1.1.1

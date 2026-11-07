@@ -30,34 +30,58 @@ let {
   fit,
 } = Astro.props;
 
-src = `/public${src}`;
+// External images (http/https) are rendered as-is with a normal <img>.
+const isExternal = /^https?:\/\//i.test(src);
+
+// Normalize local image paths coming from the CMS:
+// "/images/foo.jpg", "images/foo.jpg" and "public/images/foo.jpg"
+// all resolve to "/images/foo.jpg".
+let localSrc = src.replace(/^\/?public\//, "/");
+if (!localSrc.startsWith("/")) localSrc = `/${localSrc}`;
 
 // Glob pattern to load images from the /public/images folder
-const images = import.meta.glob("/public/images/**/*.{jpeg,jpg,png,gif,svg}");
+const images = import.meta.glob(
+  "/public/images/**/*.{jpeg,jpg,png,gif,svg,webp,avif}",
+);
 
 // Check if the source path is valid
-const isValidPath = images[src] ? true : false;
+const globKey = `/public${localSrc}`;
+const isValidPath = !isExternal && images[globKey] ? true : false;
 
 // Log a warning message in red if the image is not found
-!isValidPath &&
+!isExternal &&
+  !isValidPath &&
   console.error(
     `\x1b[31mImage not found - ${src}.\x1b[0m Make sure the image is in the /public/images folder.`,
   );
 ---
 
 {
-  isValidPath && (
-    <Image
-      src={images[src]() as Promise<{ default: ImageMetadata }>}
+  isExternal ? (
+    <img
+      src={src}
       alt={alt}
       width={width}
       height={height}
       loading={loading}
-      fit={fit ? fit : "contain"}
       decoding={decoding}
       class={className}
-      format={format}
       style={style}
     />
+  ) : (
+    isValidPath && (
+      <Image
+        src={images[globKey]() as Promise<{ default: ImageMetadata }>}
+        alt={alt}
+        width={width}
+        height={height}
+        loading={loading}
+        fit={fit ? fit : "contain"}
+        decoding={decoding}
+        class={className}
+        format={format}
+        style={style}
+      />
+    )
   )
 }

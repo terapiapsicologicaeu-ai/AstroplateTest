@@ -7,12 +7,16 @@ import { IoSearch } from "react-icons/io5";
 
 export interface ChildNavigationLink {
   name: string;
-  url: string;
+  url?: string;
+  page?: string;
+  post?: string;
 }
 
 export interface NavigationLink {
   name: string;
-  url: string;
+  url?: string;
+  page?: string;
+  post?: string;
   hasChildren?: boolean;
   children?: ChildNavigationLink[];
 }
@@ -20,6 +24,12 @@ export interface NavigationLink {
 const { main }: { main: NavigationLink[] } = menu;
 const { navigation_button, settings } = config;
 const { pathname } = Astro.url;
+
+function resolveMenuUrl(item: ChildNavigationLink): string {
+  if (item.page) return `/${item.page}`;
+  if (item.post) return `/blog/${item.post}`;
+  return item.url || "#";
+}
 ---
 
 <header class={`header z-30 ${settings.sticky_header && "sticky top-0"}`}>
@@ -63,9 +73,9 @@ const { pathname } = Astro.url;
                 <label
                   for={`submenu-${menu.name}`}
                   class={`nav-link inline-flex items-center ${
-                    menu.children?.map(({ url }) => url).includes(pathname) ||
+                    menu.children?.map(resolveMenuUrl).includes(pathname) ||
                     menu.children
-                      ?.map(({ url }) => `${url}/`)
+                      ?.map((child) => `${resolveMenuUrl(child)}/`)
                       .includes(pathname)
                       ? "active"
                       : ""
@@ -77,29 +87,33 @@ const { pathname } = Astro.url;
                   </svg>
                 </label>
                 <ul class="nav-dropdown-list hidden peer-checked:block lg:invisible lg:absolute lg:block lg:opacity-0 lg:group-hover:visible lg:group-hover:opacity-100">
-                  {menu.children?.map((child) => (
+                  {menu.children?.map((child) => {
+                    const childUrl = resolveMenuUrl(child);
+                    return (
                     <li class="nav-dropdown-item">
                       <a
-                        href={child.url}
+                        href={childUrl}
                         aria-label={child.name}
                         class={`nav-dropdown-link block ${
-                          (pathname === `${child.url}/` ||
-                            pathname === child.url) &&
+                          (pathname === `${childUrl}/` ||
+                            pathname === childUrl) &&
                           "active"
                         }`}
                       >
                         {child.name}
                       </a>
                     </li>
-                  ))}
+                    );
+                  })}
                 </ul>
               </li>
             ) : (
               <li class="nav-item">
                 <a
-                  href={menu.url}
+                  href={resolveMenuUrl(menu)}
                   class={`nav-link block ${
-                    (pathname === `${menu.url}/` || pathname === menu.url) &&
+                    (pathname === `${resolveMenuUrl(menu)}/` ||
+                      pathname === resolveMenuUrl(menu)) &&
                     "active"
                   }`}
                 >

@@ -6,7 +6,20 @@ import menu from "@/config/menu.json";
 import social from "@/config/social.json";
 import { markdownify } from "@/lib/utils/textConverter";
 
-const { footer }: { footer: { name: string; url: string }[] } = menu;
+interface FooterLink {
+  name: string;
+  url?: string;
+  page?: string;
+  post?: string;
+}
+
+const { footer }: { footer: FooterLink[] } = menu;
+
+function resolveFooterUrl(item: FooterLink): string {
+  if (item.page) return `/${item.page}`;
+  if (item.post) return `/blog/${item.post}`;
+  return item.url || "#";
+}
 ---
 
 <footer class="bg-light dark:bg-darkmode-light">
@@ -20,7 +33,7 @@ const { footer }: { footer: { name: string; url: string }[] } = menu;
           {
             footer.map((menu) => (
               <li class="m-3 inline-block">
-                <a href={menu.url}>{menu.name}</a>
+                <a href={resolveFooterUrl(menu)}>{menu.name}</a>
               </li>
             ))
           }

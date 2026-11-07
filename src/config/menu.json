@@ -2,19 +2,22 @@
   "main": [
     {
       "name": "Home",
-      "url": "/"
+      "url": "/",
+      "hasChildren": false
     },
     {
       "name": "About",
-      "url": "/about"
+      "url": "/about",
+      "hasChildren": false
     },
     {
       "name": "Elements",
-      "url": "/elements"
+      "url": "/elements",
+      "hasChildren": false
     },
     {
       "name": "Pages",
-      "url": "",
+      "url": "#",
       "hasChildren": true,
       "children": [
         {
@@ -22,8 +25,8 @@
           "url": "/contact"
         },
         {
-          "name": "Blog",
-          "url": "/blog"
+          "name": "Pagina di prova",
+          "url": "/pagina-di-prova"
         },
         {
           "name": "Authors",
@@ -42,6 +45,11 @@
           "url": "/404"
         }
       ]
+    },
+    {
+      "name": "Blog",
+      "url": "/blog",
+      "hasChildren": false
     }
   ],
   "footer": [

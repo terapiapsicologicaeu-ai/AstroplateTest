@@ -10,11 +10,10 @@ output:
   omit_empty_optional_fields: true
 
 collections:
-  # 1. Blog (ricco come la demo)
+  # 1. Blog
   - name: "blog"
     label: "Articoli & Post"
     label_singular: "Articolo"
-    description: "Gestisci gli articoli del blog."
     icon: "article"
     folder: "src/content/blog"
     create: true
@@ -57,9 +56,9 @@ collections:
     fields:
       - { label: "Titolo", name: "title", widget: "string" }
       - { label: "Meta Title", name: "meta_title", widget: "string", required: false }
-      - { label: "Descrizione / Meta Description", name: "description", widget: "text" }
-      - { label: "Data di Pubblicazione", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
-      - { label: "Immagine di Copertina", name: "image", widget: "image", required: false }
+      - { label: "Descrizione", name: "description", widget: "text" }
+      - { label: "Data", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
+      - { label: "Immagine", name: "image", widget: "image", required: false }
       - { label: "Autore", name: "author", widget: "string", default: "Admin" }
       - label: "Categorie"
         name: "categories"
@@ -69,12 +68,12 @@ collections:
         name: "tags"
         widget: "list"
         default: ["others"]
-      - { label: "Bozza / Pubblicato", name: "draft", widget: "boolean", default: false }
-      - { label: "Contenuto dell'Articolo", name: "body", widget: "markdown" }
+      - { label: "Bozza", name: "draft", widget: "boolean", default: false }
+      - { label: "Contenuto", name: "body", widget: "markdown" }
 
-  # 2. Pagine Statiche
+  # 2. Pagine
   - name: "pages"
-    label: "Pagine Statiche"
+    label: "Pagine"
     label_singular: "Pagina"
     icon: "description"
     folder: "src/content/pages"
@@ -82,7 +81,7 @@ collections:
     slug: "{{slug}}"
     summary: "{{title}}"
     fields:
-      - { label: "Titolo Pagina", name: "title", widget: "string" }
+      - { label: "Titolo", name: "title", widget: "string" }
       - { label: "Meta Title", name: "meta_title", widget: "string", required: false }
       - { label: "Descrizione", name: "description", widget: "text", required: false }
       - { label: "Data", name: "date", widget: "datetime", format: "YYYY-MM-DD", required: false }
@@ -93,7 +92,6 @@ collections:
   # 3. Autori
   - name: "authors"
     label: "Autori"
-    label_singular: "Autore"
     icon: "group"
     folder: "src/content/authors"
     create: true
@@ -102,11 +100,21 @@ collections:
     fields:
       - { label: "Titolo", name: "title", widget: "string" }
       - { label: "Descrizione", name: "description", widget: "text", required: false }
+      - { label: "Email", name: "email", widget: "string", required: false }
       - { label: "Immagine", name: "image", widget: "image", required: false }
+      - label: "Social"
+        name: "social"
+        widget: "list"
+        required: false
+        summary: "{{fields.name}} → {{fields.link}}"
+        fields:
+          - { label: "Nome", name: "name", widget: "string" }
+          - { label: "Icona", name: "icon", widget: "string" }
+          - { label: "Link", name: "link", widget: "string" }
       - { label: "Bozza", name: "draft", widget: "boolean", required: false }
       - { label: "Contenuto", name: "body", widget: "markdown" }
 
-  # 4. About (singleton file)
+  # 4. About
   - name: "about"
     label: "About"
     icon: "info"
@@ -123,7 +131,7 @@ collections:
           - { label: "Bozza", name: "draft", widget: "boolean", required: false }
           - { label: "Contenuto", name: "body", widget: "markdown" }
 
-  # 5. Contact (singleton file)
+  # 5. Contact
   - name: "contact"
     label: "Contatti"
     icon: "mail"
@@ -140,7 +148,7 @@ collections:
           - { label: "Bozza", name: "draft", widget: "boolean", required: false }
           - { label: "Contenuto", name: "body", widget: "markdown" }
 
-  # 6. Homepage (singleton file)
+  # 6. Homepage
   - name: "homepage"
     label: "Homepage"
     icon: "home"
@@ -149,15 +157,40 @@ collections:
         name: "homepage"
         file: "src/content/homepage/-index.md"
         fields:
-          - { label: "Titolo", name: "title", widget: "string" }
-          - { label: "Meta Title", name: "meta_title", widget: "string", required: false }
-          - { label: "Descrizione", name: "description", widget: "text", required: false }
-          - { label: "Data", name: "date", widget: "datetime", format: "YYYY-MM-DD", required: false }
-          - { label: "Immagine", name: "image", widget: "image", required: false }
+          - { label: "Titolo interno", name: "title", widget: "string", required: false }
           - { label: "Bozza", name: "draft", widget: "boolean", required: false }
-          - { label: "Contenuto", name: "body", widget: "markdown" }
+          - label: "Banner"
+            name: "banner"
+            widget: "object"
+            fields:
+              - { label: "Titolo", name: "title", widget: "string" }
+              - { label: "Contenuto", name: "content", widget: "text" }
+              - { label: "Immagine", name: "image", widget: "image" }
+              - label: "Pulsante"
+                name: "button"
+                widget: "object"
+                fields:
+                  - { label: "Abilita", name: "enable", widget: "boolean" }
+                  - { label: "Etichetta", name: "label", widget: "string" }
+                  - { label: "Link", name: "link", widget: "string" }
+          - label: "Caratteristiche"
+            name: "features"
+            widget: "list"
+            summary: "{{fields.title}}"
+            fields:
+              - { label: "Titolo", name: "title", widget: "string" }
+              - { label: "Contenuto", name: "content", widget: "text" }
+              - { label: "Immagine", name: "image", widget: "image" }
+              - { label: "Punti elenco", name: "bulletpoints", widget: "list" }
+              - label: "Pulsante"
+                name: "button"
+                widget: "object"
+                fields:
+                  - { label: "Abilita", name: "enable", widget: "boolean" }
+                  - { label: "Etichetta", name: "label", widget: "string" }
+                  - { label: "Link", name: "link", widget: "string" }
 
-  # 7. Sezioni (cta, testimonial)
+  # 7. Sezioni
   - name: "sections"
     label: "Sezioni"
     icon: "view_quilt"
@@ -192,3 +225,245 @@ collections:
               - { label: "Avatar", name: "avatar", widget: "image" }
               - { label: "Ruolo", name: "designation", widget: "string" }
               - { label: "Contenuto", name: "content", widget: "text" }
+
+singletons:
+  # Impostazioni sito (config.json)
+  - name: "site_config"
+    label: "Impostazioni Sito"
+    icon: "settings"
+    file: "src/config/config.json"
+    fields:
+      - label: "Sito"
+        name: "site"
+        widget: "object"
+        fields:
+          - { label: "Titolo", name: "title", widget: "string" }
+          - { label: "Base URL", name: "base_url", widget: "string" }
+          - { label: "Base Path", name: "base_path", widget: "string" }
+          - { label: "Trailing Slash", name: "trailing_slash", widget: "boolean" }
+          - { label: "Favicon", name: "favicon", widget: "image", required: false }
+          - { label: "Logo", name: "logo", widget: "image", required: false }
+          - { label: "Logo Darkmode", name: "logo_darkmode", widget: "image", required: false }
+          - { label: "Larghezza Logo", name: "logo_width", widget: "string" }
+          - { label: "Altezza Logo", name: "logo_height", widget: "string" }
+          - { label: "Testo Logo", name: "logo_text", widget: "string" }
+      - label: "Impostazioni"
+        name: "settings"
+        widget: "object"
+        fields:
+          - { label: "Ricerca", name: "search", widget: "boolean" }
+          - { label: "Header Sticky", name: "sticky_header", widget: "boolean" }
+          - { label: "Theme Switcher", name: "theme_switcher", widget: "boolean" }
+          - { label: "Tema Predefinito", name: "default_theme", widget: "select", options: ["system", "light", "dark"] }
+          - { label: "Paginazione", name: "pagination", widget: "number", value_type: int }
+          - { label: "Lunghezza Sommario", name: "summary_length", widget: "number", value_type: int }
+          - { label: "Cartella Blog", name: "blog_folder", widget: "string" }
+      - label: "Annuncio"
+        name: "announcement"
+        widget: "object"
+        fields:
+          - { label: "Abilita", name: "enable", widget: "boolean" }
+          - { label: "Contenuto", name: "content", widget: "text" }
+          - { label: "Giorni di scadenza", name: "expire_days", widget: "number", value_type: int }
+      - label: "Parametri"
+        name: "params"
+        widget: "object"
+        fields:
+          - { label: "Azione Form Contatto", name: "contact_form_action", widget: "string" }
+          - { label: "Copyright", name: "copyright", widget: "string" }
+      - label: "Pulsante Navigazione"
+        name: "navigation_button"
+        widget: "object"
+        fields:
+          - { label: "Abilita", name: "enable", widget: "boolean" }
+          - { label: "Etichetta", name: "label", widget: "string" }
+          - { label: "Link", name: "link", widget: "string" }
+      - label: "Google Tag Manager"
+        name: "google_tag_manager"
+        widget: "object"
+        fields:
+          - { label: "Abilita", name: "enable", widget: "boolean" }
+          - { label: "GTM ID", name: "gtm_id", widget: "string" }
+      - label: "Disqus"
+        name: "disqus"
+        widget: "object"
+        fields:
+          - { label: "Abilita", name: "enable", widget: "boolean" }
+          - { label: "Shortname", name: "shortname", widget: "string" }
+      - label: "Metadata"
+        name: "metadata"
+        widget: "object"
+        fields:
+          - { label: "Autore Meta", name: "meta_author", widget: "string" }
+          - { label: "Immagine OG", name: "meta_image", widget: "image", required: false }
+          - { label: "Descrizione Meta", name: "meta_description", widget: "text" }
+      - label: "LLMs"
+        name: "llms"
+        widget: "object"
+        fields:
+          - { label: "Genera llms.txt", name: "generate_llms_txt", widget: "boolean" }
+          - { label: "Genera llms-full.txt", name: "generate_llms_full_txt", widget: "boolean" }
+          - { label: "Genera MD individuali", name: "generate_individual_md", widget: "boolean" }
+          - { label: "Include", name: "include", widget: "list", required: false }
+          - { label: "Exclude", name: "exclude", widget: "list", required: false }
+
+  # Menu
+  - name: "menu"
+    label: "Menu di Navigazione"
+    icon: "menu"
+    file: "src/config/menu.json"
+    fields:
+      - label: "Menu Principale"
+        name: "main"
+        widget: "list"
+        summary: "{{name}} → {{url}}"
+        fields:
+          - { label: "Nome", name: "name", widget: "string" }
+          - label: "Pagina interna"
+            name: "page"
+            widget: "relation"
+            collection: "pages"
+            value_field: "{{slug}}"
+            display_fields: ["{{title}}"]
+            search_fields: ["title"]
+            required: false
+          - label: "Articolo del blog"
+            name: "post"
+            widget: "relation"
+            collection: "blog"
+            value_field: "{{slug}}"
+            display_fields: ["{{title}}"]
+            search_fields: ["title"]
+            required: false
+          - { label: "URL personalizzato / esterno", name: "url", widget: "string", required: false }
+          - { label: "Ha figli", name: "hasChildren", widget: "boolean", required: false }
+          - label: "Figli"
+            name: "children"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "Nome", name: "name", widget: "string" }
+              - label: "Pagina interna"
+                name: "page"
+                widget: "relation"
+                collection: "pages"
+                value_field: "{{slug}}"
+                display_fields: ["{{title}}"]
+                search_fields: ["title"]
+                required: false
+              - label: "Articolo del blog"
+                name: "post"
+                widget: "relation"
+                collection: "blog"
+                value_field: "{{slug}}"
+                display_fields: ["{{title}}"]
+                search_fields: ["title"]
+                required: false
+              - { label: "URL personalizzato / esterno", name: "url", widget: "string", required: false }
+      - label: "Menu Footer"
+        name: "footer"
+        widget: "list"
+        summary: "{{name}} → {{url}}"
+        fields:
+          - { label: "Nome", name: "name", widget: "string" }
+          - label: "Pagina interna"
+            name: "page"
+            widget: "relation"
+            collection: "pages"
+            value_field: "{{slug}}"
+            display_fields: ["{{title}}"]
+            search_fields: ["title"]
+            required: false
+          - label: "Articolo del blog"
+            name: "post"
+            widget: "relation"
+            collection: "blog"
+            value_field: "{{slug}}"
+            display_fields: ["{{title}}"]
+            search_fields: ["title"]
+            required: false
+          - { label: "URL personalizzato / esterno", name: "url", widget: "string", required: false }
+
+  # Social
+  - name: "social"
+    label: "Social Links"
+    icon: "share"
+    file: "src/config/social.json"
+    fields:
+      - label: "Social Principali"
+        name: "main"
+        widget: "list"
+        summary: "{{name}} → {{link}}"
+        fields:
+          - { label: "Nome", name: "name", widget: "string" }
+          - { label: "Icona", name: "icon", widget: "string" }
+          - { label: "Link", name: "link", widget: "string" }
+
+  # Tema
+  - name: "theme"
+    label: "Tema (Colori & Font)"
+    icon: "palette"
+    file: "src/config/theme.json"
+    fields:
+      - label: "Colori"
+        name: "colors"
+        widget: "object"
+        fields:
+          - label: "Default"
+            name: "default"
+            widget: "object"
+            fields:
+              - label: "Colore Tema"
+                name: "theme_color"
+                widget: "object"
+                fields:
+                  - { label: "Primario", name: "primary", widget: "color" }
+                  - { label: "Body", name: "body", widget: "color" }
+                  - { label: "Bordo", name: "border", widget: "color" }
+                  - { label: "Chiaro", name: "light", widget: "color" }
+                  - { label: "Scuro", name: "dark", widget: "color" }
+              - label: "Colore Testo"
+                name: "text_color"
+                widget: "object"
+                fields:
+                  - { label: "Testo", name: "text", widget: "color" }
+                  - { label: "Testo Scuro", name: "text_dark", widget: "color" }
+                  - { label: "Testo Chiaro", name: "text_light", widget: "color" }
+          - label: "Dark Mode"
+            name: "darkmode"
+            widget: "object"
+            fields:
+              - label: "Colore Tema"
+                name: "theme_color"
+                widget: "object"
+                fields:
+                  - { label: "Primario", name: "primary", widget: "color" }
+                  - { label: "Body", name: "body", widget: "color" }
+                  - { label: "Bordo", name: "border", widget: "color" }
+                  - { label: "Chiaro", name: "light", widget: "color" }
+                  - { label: "Scuro", name: "dark", widget: "color" }
+              - label: "Colore Testo"
+                name: "text_color"
+                widget: "object"
+                fields:
+                  - { label: "Testo", name: "text", widget: "color" }
+                  - { label: "Testo Scuro", name: "text_dark", widget: "color" }
+                  - { label: "Testo Chiaro", name: "text_light", widget: "color" }
+      - label: "Font"
+        name: "fonts"
+        widget: "object"
+        fields:
+          - label: "Famiglia Font"
+            name: "font_family"
+            widget: "object"
+            fields:
+              - { label: "Primario", name: "primary", widget: "string" }
+              - { label: "Tipo Primario", name: "primary_type", widget: "string" }
+              - { label: "Secondario", name: "secondary", widget: "string" }
+              - { label: "Tipo Secondario", name: "secondary_type", widget: "string" }
+          - label: "Dimensione Font"
+            name: "font_size"
+            widget: "object"
+            fields:
+              - { label: "Base", name: "base", widget: "string" }
+              - { label: "Scala", name: "scale", widget: "string" }

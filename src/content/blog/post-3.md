@@ -1,12 +1,14 @@
 ---
-title: "How to build an Application with modern Technology"
-meta_title: ""
-description: "this is meta description"
+title: How to build an Application with modern Technology
+description: this is meta description
 date: 2022-04-04T05:00:00Z
-image: "/images/image-placeholder.png"
-categories: ["Software"]
-author: "John Doe"
-tags: ["software", "tailwind"]
+image: /images/17-02-04-771_1280.jpg
+author: John Doe
+categories:
+  - Software
+tags:
+  - software
+  - tailwind
 draft: false
 ---
 

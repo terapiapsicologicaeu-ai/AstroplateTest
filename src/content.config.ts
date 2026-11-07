@@ -4,12 +4,12 @@ import { z } from "astro/zod";
 
 const commonFields = {
   title: z.string(),
-  description: z.string(),
+  description: z.string().optional(),
   meta_title: z.string().optional(),
   // z.coerce.date() handles both Date objects and ISO string dates from frontmatter (Zod 4)
   date: z.coerce.date().optional(),
   image: z.string().optional(),
-  draft: z.boolean(),
+  draft: z.boolean().default(false),
 };
 
 // Post collection schema

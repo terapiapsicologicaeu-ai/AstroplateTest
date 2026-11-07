@@ -1,6 +1,6 @@
 ---
 title: titolo dell'ultimo post che ho scritto
-date: 2026-11-07
+date: 2026-11-05
 image: https://picsum.photos/id/129/1920/1280.webp
 author: Leonardo
 categories:
@@ -21,7 +21,7 @@ Il pulsante Focus è molto utile e sembra funzionare bene.
 
 <a href="https://www.google.it" class="btn btn-outline-primary" target="_blank" rel="noopener noreferrer">Pulsante Contorno</a>
 
-Nell'editor sono presenti due pulsanti per i link, il primo  (tra il codice e la tabella) è poco utile perchè non permette la selezione visuale, il secondo invece va bene perchè permette di creare: <a href="/blog/post-2" target="_blank" rel="noopener noreferrer" data-internal-link>link ad articoli</a>, <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" data-internal-link>link a pagine</a>, <a href="https://www.google.it" target="_blank" rel="noopener noreferrer" data-internal-link>link esterno</a>
+Nell'editor sono presenti due pulsanti per i link, il primo  (tra il codice e la tabella) è poco utile perchè non permette la selezione visuale, il secondo invece va bene perchè permette di creare: <a href="/blog" target="_blank" rel="noopener noreferrer" data-internal-link>link ad articoli</a>, <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" data-internal-link>link a pagine</a>, <a href="https://www.google.it" target="_blank" rel="noopener noreferrer" data-internal-link>link esterno</a>
 
 Tuttavia se provo sia in link ad articoli sia in link a pagine a selezionare l'opzione crea nuovo apparentemente sembra che posso creare un link e contestualemte creare un nuovo articolo o pagina, ma poi quando provo asalvare mi dice ipossibile perchè "presenti 0 errori" e chiaramente poi devo annullare.
 

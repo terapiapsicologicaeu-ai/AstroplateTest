@@ -54,6 +54,18 @@ code {
   @apply after:border-none;
 }
 
+/* Tailwind Typography adds backticks around inline code by default.
+   Remove them so only the code text is shown, and keep the text readable
+   in both light and dark themes. */
+.content code {
+  @apply text-text-dark dark:text-darkmode-text-dark;
+}
+
+.content code::before,
+.content code::after {
+  content: none !important;
+}
+
 blockquote > p {
   @apply my-0!;
 }

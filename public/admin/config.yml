@@ -11,6 +11,9 @@ output:
 
 field_defaults:
   richtext:
+    # Only the visual rich-text mode: the toolbar inserts real formatting,
+    # not literal Markdown backticks.
+    modes: [rich_text]
     allow_nested_components: exclude_self
     # Built-in “link” button removed: the custom “Link” component handles
     # internal pages/posts, external URLs and the new-tab option.

@@ -4,7 +4,7 @@ draft: false
 banner:
   title: The Ultimate Starter Template You Need To Start Your Astro Project
   content: Astroplate is a free starter template built with Astro and TailwindCSS, providing everything you need to jumpstart your Astro project and save valuable time.
-  image: /images/Gemini_Generated_Image_j0h7t2j0h7t2j0h7.png
+  image: /images/Gemini_Generated_Image_2px9zq2px9zq2px9.png
   button:
     enable: true
     label: Fork Deploy and Edit Online 🚀

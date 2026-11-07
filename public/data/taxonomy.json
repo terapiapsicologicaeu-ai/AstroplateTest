@@ -2,8 +2,10 @@
   "categories": [
     "Application",
     "Architecture",
+    "Commit",
     "Data",
     "Intelligenza Artificiale",
+    "Log Sito",
     "Neuroscenze",
     "others",
     "Psicologia",
@@ -12,6 +14,8 @@
     "Technology"
   ],
   "tags": [
+    "Astro",
+    "Log",
     "Mio primo tag",
     "Mio secondo tag",
     "nextjs",
@@ -19,7 +23,9 @@
     "primo tag",
     "secondo tag",
     "silicon",
+    "Sito",
     "software",
+    "Sveltia",
     "tailwind",
     "technology"
   ]

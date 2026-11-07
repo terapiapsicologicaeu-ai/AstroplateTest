@@ -68,6 +68,12 @@
         background: rgba(255, 255, 255, 0.08);
       }
     }
+    /* Hide the relation “Add/Edit” quick actions inside dialogs.
+       The Link component uses the dropdown selector only. */
+    dialog [class~="wrapper"] > [class~="actions"],
+    [role="dialog"] [class~="wrapper"] > [class~="actions"] {
+      display: none !important;
+    }
   </style>
 </head>
 <body>
@@ -128,8 +134,9 @@
           value_field: "{{slug}}",
           display_fields: ["title"],
           search_fields: ["title"],
+          dropdown_threshold: 0,
           required: false,
-          hint: "Per crearne una nuova dal dialog, compila il titolo.",
+          hint: "Compila solo uno dei tre campi. Se ne compili più di uno, vince l'articolo.",
         },
         {
           name: "post",
@@ -139,8 +146,9 @@
           value_field: "{{slug}}",
           display_fields: ["title"],
           search_fields: ["title"],
+          dropdown_threshold: 0,
           required: false,
-          hint: "Per crearne uno nuovo dal dialog, compila il titolo.",
+          hint: "Compila solo uno dei tre campi. Se ne compili più di uno, vince l'articolo.",
         },
         {
           name: "url",
@@ -551,6 +559,26 @@
       }
     });
     focusObserver.observe(document.body, { childList: true, subtree: true });
+
+    // Enable browser spellcheck in the CMS text areas (Lexical editor,
+    // textareas and single-line text inputs).
+    const enableSpellcheck = () => {
+      document
+        .querySelectorAll('[contenteditable="true"], textarea, input[type="text"]')
+        .forEach((element) => {
+          if (element.getAttribute("spellcheck") !== "true") {
+            element.setAttribute("spellcheck", "true");
+          }
+        });
+    };
+    const spellcheckObserver = new MutationObserver(enableSpellcheck);
+    spellcheckObserver.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["spellcheck", "contenteditable"],
+    });
+    enableSpellcheck();
   </script>
 </body>
 </html>

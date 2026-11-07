@@ -1,17 +1,43 @@
 ---
 import Breadcrumbs from "@/components/Breadcrumbs.astro";
+import ImageMod from "@/components/ImageMod.astro";
 import { humanize } from "@/lib/utils/textConverter";
 
-const { title = "" }: { title?: string } = Astro.props;
+const { title = "", image }: { title?: string; image?: string } =
+  Astro.props;
 ---
 
 <section>
   <div class="container text-center">
     <div
-      class="rounded-2xl bg-gradient-to-b from-body to-light px-8 py-14 dark:from-darkmode-body dark:to-darkmode-light"
+      class:list={[
+        "relative overflow-hidden rounded-2xl px-8 py-14",
+        image
+          ? "text-white"
+          : "bg-gradient-to-b from-body to-light dark:from-darkmode-body dark:to-darkmode-light",
+      ]}
     >
-      <h1 set:text={humanize(title)} />
-      <Breadcrumbs className="mt-6" />
+      {
+        image && (
+          <>
+            <ImageMod
+              src={image}
+              alt={title}
+              width={1200}
+              height={400}
+              format="webp"
+              fit="cover"
+              loading="eager"
+              class="absolute inset-0 h-full w-full object-cover"
+            />
+            <div class="absolute inset-0 bg-black/50" />
+          </>
+        )
+      }
+      <div class="relative">
+        <h1 set:text={humanize(title)} />
+        <Breadcrumbs className="mt-6" light={Boolean(image)} />
+      </div>
     </div>
   </div>
 </section>

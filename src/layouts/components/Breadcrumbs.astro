@@ -1,7 +1,8 @@
 ---
 import { humanize } from "@/lib/utils/textConverter";
 
-const { className }: { className?: string } = Astro.props;
+const { className, light = false }: { className?: string; light?: boolean } =
+  Astro.props;
 
 const paths = Astro.url.pathname.split("/").filter((x) => x);
 let parts = [
@@ -30,11 +31,24 @@ paths.forEach((label: string, i: number) => {
         <li class="mx-1 capitalize" role="listitem">
           {index > 0 && <span class="inlin-block mr-1">/</span>}
           {index !== parts.length - 1 ? (
-            <a class="text-primary dark:text-darkmode-primary" {...attrs}>
+            <a
+              class:list={[
+                light
+                  ? "text-white/90 hover:text-white"
+                  : "text-primary dark:text-darkmode-primary",
+              ]}
+              {...attrs}
+            >
               {label}
             </a>
           ) : (
-            <span class="text-text-light dark:text-darkmode-text-light">
+            <span
+              class:list={[
+                light
+                  ? "text-white/80"
+                  : "text-text-light dark:text-darkmode-text-light",
+              ]}
+            >
               {label}
             </span>
           )}

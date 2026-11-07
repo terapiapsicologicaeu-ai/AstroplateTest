@@ -4,7 +4,7 @@ draft: false
 banner:
   title: The Ultimate Starter Template You Need To Start Your Astro Project
   content: Astroplate is a free starter template built with Astro and TailwindCSS, providing everything you need to jumpstart your Astro project and save valuable time.
-  image: /images/Gemini_Generated_Image_2px9zq2px9zq2px9.png
+  image: /images/banner.png
   button:
     enable: true
     label: Fork Deploy and Edit Online 🚀
@@ -12,7 +12,7 @@ banner:
 features:
   - title: What's Included in Astroplate
     content: Astroplate is a comprehensive starter template that includes everything you need to get started with your Astro project. What's Included in Astroplate
-    image: /images/service-1.png
+    image: /images/servizio 1.png
     bulletpoints:
       - 10+ Pre-build pages
       - 95+ Google Pagespeed Score
@@ -26,7 +26,7 @@ features:
       link: '#'
   - title: Discover the Key Features Of Astro
     content: 'Astro is an all-in-one web framework for building fast, content-focused websites. It offers a range of exciting features for developers and website creators. Some of the key features are:'
-    image: /images/service-2.png
+    image: /images/servizio 2.png
     bulletpoints:
       - 'Zero JS, by default: No JavaScript runtime overhead to slow you down.'
       - 'Customizable: Tailwind, MDX, and 100+ other integrations to choose from.'
@@ -37,7 +37,7 @@ features:
       link: https://github.com/zeon-studio/astroplate
   - title: The Top Reasons to Choose Astro for Your Next Project
     content: With Astro, you can build modern and content-focused websites without sacrificing performance or ease of use.
-    image: /images/service-3.png
+    image: /images/servizio 3.png
     bulletpoints:
       - Instantly load static sites for better user experience and SEO.
       - Intuitive syntax and support for popular frameworks make learning and using Astro a breeze.
@@ -48,5 +48,3 @@ features:
       label: p
       link: '#'
 ---
-
-ciao

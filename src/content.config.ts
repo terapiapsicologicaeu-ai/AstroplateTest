@@ -103,6 +103,20 @@ const homepageCollection = defineCollection({
         }),
       }),
     ),
+    // Free text blocks managed from the CMS, placed in fixed page areas.
+    modules: z
+      .array(
+        z.object({
+          position: z
+            .enum(["after_banner", "after_features", "before_cta"])
+            .default("after_features"),
+          title: z.string().optional(),
+          content: z.string(),
+          image: z.string().optional(),
+          image_right: z.boolean().default(false),
+        }),
+      )
+      .default(() => []),
   }),
 });
 

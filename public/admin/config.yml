@@ -180,7 +180,7 @@ collections:
       - { label: "Meta Title", name: "meta_title", widget: "string", required: false }
       - { label: "Descrizione", name: "description", widget: "text", required: false }
       - { label: "Data", name: "date", widget: "datetime", type: "date", format: "YYYY-MM-DD", required: false }
-      - { label: "Immagine", name: "image", widget: "image", required: false, hint: "Consigliato 1200x630 px." }
+      - { label: "Immagine", name: "image", widget: "image", required: false, hint: "Consigliato almeno 1200x400 px. Viene mostrata come sfondo dietro il titolo." }
       - { label: "Bozza", name: "draft", widget: "boolean", required: false }
       - { label: "Contenuto", name: "body", widget: "markdown", hint: "I file .mdx con componenti JSX vanno modificati nel codice." }
 
@@ -306,6 +306,28 @@ collections:
                   - { label: "Abilita", name: "enable", widget: "boolean" }
                   - { label: "Etichetta", name: "label", widget: "string" }
                   - { label: "Link", name: "link", widget: "string" }
+          - { label: "Contenuto libero", name: "body", widget: "markdown", required: false, hint: "Testo mostrato dopo le caratteristiche, prima delle testimonianze. Usa la toolbar per formattare." }
+          - label: "Moduli di testo"
+            name: "modules"
+            widget: "list"
+            label_singular: "Modulo"
+            summary: "{{fields.position}} — {{fields.title}}"
+            collapsed: true
+            required: false
+            hint: "Blocchi di testo libero mostrati nella home. Scegli la posizione e usa l'editor per formattare."
+            fields:
+              - label: "Posizione"
+                name: "position"
+                widget: "select"
+                default: "after_features"
+                options:
+                  - { label: "Dopo il banner", value: "after_banner" }
+                  - { label: "Dopo le caratteristiche", value: "after_features" }
+                  - { label: "Prima della CTA", value: "before_cta" }
+              - { label: "Titolo (opzionale)", name: "title", widget: "string", required: false }
+              - { label: "Contenuto", name: "content", widget: "markdown", hint: "Testo del modulo. Sono supportati titoli, liste, grassetto, link e immagini." }
+              - { label: "Immagine (opzionale)", name: "image", widget: "image", required: false, hint: "Se presente, il testo va a fianco dell'immagine." }
+              - { label: "Immagine a destra", name: "image_right", widget: "boolean", default: false, required: false }
 
   # 7. Sezioni
   - name: "sections"

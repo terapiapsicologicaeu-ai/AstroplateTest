@@ -1,0 +1,43 @@
+---
+import ImageMod from "@/components/ImageMod.astro";
+import { markdownify } from "@/lib/utils/textConverter";
+
+interface Props {
+  title?: string;
+  content: string;
+  image?: string;
+  imageRight?: boolean;
+}
+
+const { title, content, image, imageRight = false } = Astro.props;
+---
+
+<section class="section-sm">
+  <div class="container">
+    <div class="row items-center justify-between">
+      {
+        image && (
+          <div
+            class={`mb-6 md:mb-0 md:col-5 ${imageRight ? "md:order-2" : ""}`}
+          >
+            <ImageMod
+              src={image}
+              height={480}
+              width={520}
+              alt={title || "Modulo home"}
+              format="webp"
+            />
+          </div>
+        )
+      }
+      <div
+        class={
+          image ? `md:col-7 ${imageRight ? "md:order-1" : ""}` : "mx-auto lg:col-9"
+        }
+      >
+        {title && <h2 set:html={markdownify(title)} class="mb-4" />}
+        <div class="content" set:html={markdownify(content, true)} />
+      </div>
+    </div>
+  </div>
+</section>
